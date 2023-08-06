@@ -205,7 +205,7 @@ void display() {
     glScalef(1.0f,2.3f, 1.0f);
     glTranslatef(2.0f, 0.0f, -9.0f);
     draw_cube(
-        make_tuple(1.0f, 0.302f, 0.0f,0.0f),
+        make_tuple(1.0f, 0.302f, 0.0f,0.0f),///khoyeri color
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f),
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f),
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f),
@@ -313,21 +313,40 @@ void display() {
     );
 
 
-    
-
-
+    //render simple desk
 
     
-    
-   
+    glLoadIdentity();
+    glTranslatef(-2.0f, -1.5f, -7.0f);
+    glScalef(0.5f, 0.3f, -0.5f);
+    glTranslatef(3.8f, 2.0f, 1.3f);
 
 
-    
+    draw_cube(
+        make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
+        make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
+        make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
+        make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
+        make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
+        make_tuple(0.282, 0.275, 0.29f, 0.0f)//khoyeri
+    );
+
+    // fan
+
+
+
+
+
+
+
+
+
 
 
 
     glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
     
+
 
     
 }
