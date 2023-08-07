@@ -413,13 +413,16 @@ void myKeyboardFunc(unsigned char key, int x, int y)
 
     switch (key) {
         case 'f':
-            fanSwitch = false;
-            std::cout << "Fan off hoise.\n";
+            if (fanSwitch) {
+                fanSwitch = false;
+                std::cout << "Fan off hoise\n";
+            }
+            else if (!fanSwitch) {
+                fanSwitch = true;
+                std::cout << "Fan on hoise.\n";
+            }
             break;
-        case 'g':
-            fanSwitch = true;
-            std::cout << "Fan on Hoise.\n";
-            break;
+        
         default:
             break;
 
