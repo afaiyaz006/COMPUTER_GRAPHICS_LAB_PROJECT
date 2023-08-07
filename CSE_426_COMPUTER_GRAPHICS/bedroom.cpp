@@ -313,15 +313,11 @@ void display() {
     );
 
 
-    //render simple desk
-
-    
+    //render simple trunk
     glLoadIdentity();
     glTranslatef(-2.0f, -1.5f, -7.0f);
     glScalef(0.5f, 0.3f, -0.5f);
     glTranslatef(3.8f, 2.0f, 1.3f);
-
-
     draw_cube(
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
@@ -330,11 +326,35 @@ void display() {
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f), //khoyeri
         make_tuple(0.282, 0.275, 0.29f, 0.0f)//khoyeri
     );
+    glLoadIdentity();
+    glTranslatef(-2.0f, -1.5f, -7.0f);
+    glScalef(0.5f, 0.01f, -0.5f);
+    glTranslatef(3.8f, 50.3f, 1.3f);
+    draw_cube(
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98)  //black
+    );
 
-    // fan
-
-
-
+    glLoadIdentity();
+    glTranslatef(-2.0f, -1.5f, -7.0f);
+    glScalef(0.5f, 0.01f, -0.5f);
+    glTranslatef(3.8f, 65.0f, 1.3f);
+    glScalef(0.1f, 2.0f, 1.0f);
+    draw_cube(
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98), //black
+        make_tuple(0.141, 0.141, 0.137, 0.98)  //black
+    );
+    
+    //render fan
+    
 
 
 
