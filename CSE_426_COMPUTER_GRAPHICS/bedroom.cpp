@@ -4,7 +4,8 @@
 using namespace std;
 /* Global variables */
 char title[] = "Bedroom";
-
+int refreshMills = 15;        // refresh interval in milliseconds
+int angleFanBlade = 0.0f;
 /* Initialize OpenGL Graphics */
 void initGL() {
     glClearColor(0.376f, 1.0f, 0.647f,0.0f); // Set background color to black and opaque
@@ -377,7 +378,7 @@ void display() {
     glScalef(1.0f, 3.0f, 1.0f);
     glTranslatef(-1.0f, -1.0f, 1.0f);
     glTranslatef(-2.0f, 1.0f, 1.0f);
-    glRotatef(180, 1, 0, 0);
+    glRotatef(angleFanBlade, 1, 0, 0);
     
     draw_cube(
         make_tuple(0.961, 0.961, 0.961, 0.98), //white
@@ -390,11 +391,16 @@ void display() {
     
     glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
     
+    angleFanBlade += 10.0f;
 
 
     
 }
-
+/* Called back when timer expired [NEW] */
+void timer(int value) {
+    glutPostRedisplay();      // Post re-paint request to activate display()
+    glutTimerFunc(refreshMills, timer, 0); // next timer call milliseconds later
+}
 
 /* Handler for window re-size event. Called back when the window first appears and
    whenever the window is re-sized with its new width and height */
@@ -423,6 +429,7 @@ int main(int argc, char** argv) {
     glutDisplayFunc(display);       // Register callback handler for window re-paint event
     glutReshapeFunc(reshape);       // Register callback handler for window re-size event
     initGL();                       // Our own OpenGL initialization
+    glutTimerFunc(0, timer, 0);     // First timer call immediately
     glutMainLoop();                 // Enter the infinite event-processing loop
     return 0;
 }
