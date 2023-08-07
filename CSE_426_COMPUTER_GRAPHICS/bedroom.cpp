@@ -306,12 +306,12 @@ void display() {
 
 
     draw_cube(
-        make_tuple(0.0f, 0.89f, 0.8f, 0.878f), //cyan
-        make_tuple(0.0f, 0.89f, 0.8f, 0.878f), //cyan
-        make_tuple(0.0f, 0.89f, 0.8f, 0.878f), //cyan
-        make_tuple(0.0f, 0.89f, 0.8f, 0.878f), //cyan
-        make_tuple(0.0f, 0.89f, 0.8f, 0.878f), //cyan
-        make_tuple(0.0f, 0.89f, 0.8f, 0.878f) //cyan
+        make_tuple(0, 0.271, 0.008, 0.98), //cyan
+        make_tuple(0, 0.271, 0.008, 0.98), //cyan
+        make_tuple(0, 0.271, 0.008, 0.98), //cyan
+        make_tuple(0, 0.271, 0.008, 0.98), //cyan
+        make_tuple(0, 0.271, 0.008, 0.98), //cyan
+        make_tuple(0, 0.271, 0.008, 0.98) //cyan
 
     );
 
