@@ -2,15 +2,27 @@
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include<tuple>   // for representing color code
 #include<iostream>
+#include<map>
 using namespace std;
 /* Global variables */
 char title[] = "Bedroom";
 int refreshMills = 15;        // refresh interval in milliseconds
 int angleFanBlade = 0.0f;
 bool fanSwitch = true;
+int colorIndex = 0;
+float colors[10][4] = {
+                {0.376f, 1.0f, 0.647f, 0.0f},//default color
+                {1.0f, 1.0f, 0.0f, 0.0f},//yellow
+                {1.0f, 0.0f, 1.0f, 0.0f},//purple
+                {1.0f, 0.5f, 0.0f, 0.0f},//orange
+                {0.0f, 1.0f, 1.0f, 1.0f},//light blue
+                {1.0f, 1.0f, 1.0f, 0.0f},//red
+                {1.0f, 1.0f, 1.0f, 0.0f}//white
+};
+
 /* Initialize OpenGL Graphics */
 void initGL() {
-    glClearColor(0.376f, 1.0f, 0.647f,0.0f); // Set background color to black and opaque
+    glClearColor(colors[colorIndex][0], colors[colorIndex][1], colors[colorIndex][2], colors[colorIndex][3]); // Set background color to black and opaque
     glClearDepth(1.0f);                   // Set background depth to farthest
     glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
     glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
@@ -75,6 +87,7 @@ void draw_cube(tuple<float, float, float, float> top_color,
 /* Handler for window-repaint event. Called back when the window first appears and
    whenever the window needs to be re-painted. */
 void display() {
+    glClearColor(colors[colorIndex][0], colors[colorIndex][1], colors[colorIndex][2], colors[colorIndex][3]);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear color and depth buffers
     glMatrixMode(GL_MODELVIEW);     // To operate on model-view matrix
 
@@ -306,12 +319,12 @@ void display() {
 
 
     draw_cube(
-        make_tuple(0, 0.271, 0.008, 0.98), //cyan
-        make_tuple(0, 0.271, 0.008, 0.98), //cyan
-        make_tuple(0, 0.271, 0.008, 0.98), //cyan
-        make_tuple(0, 0.271, 0.008, 0.98), //cyan
-        make_tuple(0, 0.271, 0.008, 0.98), //cyan
-        make_tuple(0, 0.271, 0.008, 0.98) //cyan
+        make_tuple(0, 0.271, 0.008, 0.98), //green
+        make_tuple(0, 0.271, 0.008, 0.98), //green
+        make_tuple(0, 0.271, 0.008, 0.98), //green
+        make_tuple(0, 0.271, 0.008, 0.98), //green
+        make_tuple(0, 0.271, 0.008, 0.98), //green
+        make_tuple(0, 0.271, 0.008, 0.98) //green
 
     );
 
@@ -422,7 +435,11 @@ void myKeyboardFunc(unsigned char key, int x, int y)
                 std::cout << "Fan on hoise.\n";
             }
             break;
-        
+        case 'c':
+            cout << colorIndex << '\n';
+            colorIndex++;
+            colorIndex = colorIndex % 7;
+            break;
         default:
             break;
 
@@ -469,9 +486,10 @@ int main(int argc, char** argv) {
     glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
     glutCreateWindow(title);          // Create window with the given title
     
-    
+    cout << "Press c to change color\n Press f to turn the fan on/off\n";
     glutDisplayFunc(display);       // Register callback handler for window re-paint event
     glutKeyboardFunc(myKeyboardFunc); //keyboard
+    
     glutReshapeFunc(reshape);       // Register callback handler for window re-size event
     initGL();                       // Our own OpenGL initialization
     glutTimerFunc(0, timer, 0);     // First timer call immediately
