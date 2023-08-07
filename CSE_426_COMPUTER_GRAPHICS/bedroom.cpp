@@ -20,10 +20,10 @@ void draw_cube(tuple<float, float, float, float> top_color,
     tuple<float, float, float, float> back_face_color,
     tuple<float, float, float, float> left_face_color,
     tuple<float, float, float, float> right_face_color) {
-    // Render a color-cube consisting of 6 quads with different colors
+    // Render a unit cube consisting of 6 quads
 
 
-    glBegin(GL_QUADS);                // Begin drawing the color cube with 6 quads
+    glBegin(GL_QUADS);                // Begin drawing the color cube
     // Top face (y = 1.0f)
     // Define vertices in counter-clockwise (CCW) order with normal pointing out
     glColor3f(get<0>(top_color), get<1>(top_color), get<1>(top_color));
@@ -354,16 +354,40 @@ void display() {
     );
     
     //render fan
+    glLoadIdentity();
+    glTranslatef(2.5f, -1.5f, -7.0f);
+    glScalef(0.1f, 2.0f, 0.1f);
+
+
+    draw_cube(
+        make_tuple(0.435, 0.451, 0.451, 0.98), //white
+        make_tuple(0.435, 0.451, 0.451, 0.98), //white
+        make_tuple(0.435, 0.451, 0.451, 0.98), //white
+        make_tuple(0.435, 0.451, 0.451, 0.98), //white
+        make_tuple(0.435, 0.451, 0.451, 0.98), //white
+        make_tuple(0.435, 0.451, 0.451, 0.98) //white
+
+
+    );
+    glLoadIdentity();
+    glTranslatef(2.5f, -1.5f, -7.0f);
+    glScalef(0.1f, 2.0f, 0.01f);
+    glScalef(1.0f, 0.1f, 1.0f);
+    glTranslatef(0.3f, 10.0f, 1.0f);
+    glScalef(1.0f, 3.0f, 1.0f);
+    glTranslatef(-1.0f, -1.0f, 1.0f);
+    glTranslatef(-2.0f, 1.0f, 1.0f);
+    glRotatef(180, 1, 0, 0);
     
-
-
-
-
-
-
-
-
-
+    draw_cube(
+        make_tuple(0.961, 0.961, 0.961, 0.98), //white
+        make_tuple(0.808, 0.831, 0.831, 0.98), //white
+        make_tuple(0.675, 0.678, 0.678, 0.98), //white
+        make_tuple(0.773, 0.851, 0.851, 0.98), //white
+        make_tuple(0.855, 0.961, 0.961, 0.98), //white
+        make_tuple(0.969, 1, 1, 0.98) //white
+    );
+    
     glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
     
 
