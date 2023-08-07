@@ -1,11 +1,13 @@
 #include <windows.h>  // for MS Windows
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include<tuple>   // for representing color code
+#include<iostream>
 using namespace std;
 /* Global variables */
 char title[] = "Bedroom";
 int refreshMills = 15;        // refresh interval in milliseconds
 int angleFanBlade = 0.0f;
+bool fanSwitch = true;
 /* Initialize OpenGL Graphics */
 void initGL() {
     glClearColor(0.376f, 1.0f, 0.647f,0.0f); // Set background color to black and opaque
@@ -388,14 +390,51 @@ void display() {
         make_tuple(0.855, 0.961, 0.961, 0.98), //white
         make_tuple(0.969, 1, 1, 0.98) //white
     );
+
+
+
     
     glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
     
-    angleFanBlade += 10.0f;
+
+    ///fan choltase
+    if (fanSwitch) {
+        angleFanBlade += 10.0f;
+    }
+    else {
+        angleFanBlade += 0.0f;
+    }
 
 
     
 }
+void myKeyboardFunc(unsigned char key, int x, int y)
+{
+
+    switch (key) {
+        case 'f':
+            fanSwitch = false;
+            std::cout << "Fan off hoise.\n";
+            break;
+        case 'g':
+            fanSwitch = true;
+            std::cout << "Fan on Hoise.\n";
+            break;
+        default:
+            break;
+
+    }
+    glutPostRedisplay();
+    
+
+}
+
+
+
+
+
+
+
 /* Called back when timer expired [NEW] */
 void timer(int value) {
     glutPostRedisplay();      // Post re-paint request to activate display()
@@ -426,7 +465,10 @@ int main(int argc, char** argv) {
     glutInitWindowSize(640, 480);   // Set the window's initial width & height
     glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
     glutCreateWindow(title);          // Create window with the given title
+    
+    
     glutDisplayFunc(display);       // Register callback handler for window re-paint event
+    glutKeyboardFunc(myKeyboardFunc); //keyboard
     glutReshapeFunc(reshape);       // Register callback handler for window re-size event
     initGL();                       // Our own OpenGL initialization
     glutTimerFunc(0, timer, 0);     // First timer call immediately
