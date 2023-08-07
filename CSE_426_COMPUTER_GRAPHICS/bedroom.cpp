@@ -2,7 +2,6 @@
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include<tuple>   // for representing color code
 #include<iostream>
-#include<map>
 using namespace std;
 /* Global variables */
 char title[] = "Bedroom";
@@ -17,8 +16,18 @@ float colors[10][4] = {
                 {1.0f, 0.5f, 0.0f, 0.0f},//orange
                 {0.0f, 1.0f, 1.0f, 1.0f},//light blue
                 {1.0f, 1.0f, 1.0f, 0.0f},//red
-                {1.0f, 1.0f, 1.0f, 0.0f}//white
+                {1.0f, 1.0f, 1.0f, 0.0f},//white
+                {1, 0.816, 0.576,0.0},//ada color
 };
+
+float daynight[2][4] = {
+    {0.667f, 1.0f, 0.957f, 0.0f},
+    {0.0f,0.0f,0.0f,0.0f}
+};
+
+
+int day = 0;
+int floorIndex = 0;
 
 /* Initialize OpenGL Graphics */
 void initGL() {
@@ -35,6 +44,8 @@ void draw_cube(tuple<float, float, float, float> top_color,
     tuple<float, float, float, float> back_face_color,
     tuple<float, float, float, float> left_face_color,
     tuple<float, float, float, float> right_face_color) {
+
+    //function to draw  a unit cube given color of its six side
     // Render a unit cube consisting of 6 quads
 
 
@@ -94,21 +105,31 @@ void display() {
     ///Khola door
     glLoadIdentity();                 // Reset the model-view matrix
     glTranslatef(5.0f, -0.1f, -9.0f);  // Move right and into the screen
-    glScalef(0.85f/2, 0.85f, 0.01f);
-    draw_cube(
-        make_tuple(0.667f, 1.0f, 0.957f,0.0f),//Blue
+    glScalef(0.85f / 2, 0.85f, 0.01f);
+    /*draw_cube(
+        make_tuple(0.667f, 1.0f, 0.957f, 0.0f),//Blue
         make_tuple(0.667f, 1.0f, 0.957f, 0.0f),//Blue
         make_tuple(0.667f, 1.0f, 0.957f, 0.0),//red
         make_tuple(0.667f, 1.0f, 0.957f, 0.0f),//Black
         make_tuple(0.667f, 1.0f, 0.957f, 0.0f),//Blue
         make_tuple(0.667f, 1.0f, 0.957f, 0.0f)//Orange
+    );*/
+    draw_cube(
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3])//day
     );
+
+
     glLoadIdentity();                 // Reset the model-view matrix
     glTranslatef(4.2f, -0.1f, -9.0f);  // Move right and into the screen
     glScalef(0.85f / 2, 0.85f, 0.1f);
-    
+
     draw_cube(
-        make_tuple(0.27f, 0.275f, 0.267f,0.0f),//brown
+        make_tuple(0.27f, 0.275f, 0.267f, 0.0f),//brown
         make_tuple(0.667f, 1.0f, 0.957f, 0.0),//brown
         make_tuple(0.82f, 0.412f, 0.0f, 0.0f),//brown
         make_tuple(0.27f, 0.275f, 0.267f, 0.0f),//brown
@@ -151,17 +172,17 @@ void display() {
     glLoadIdentity();
     glTranslatef(-2.0f, -1.5f, -7.0f);
     glScalef(1.0f, 0.3f, 2.5f);
-   
+
 
     draw_cube(
-        make_tuple(0.38f, 0.102f, 0.0f,0.0f), //brown
+        make_tuple(0.38f, 0.102f, 0.0f, 0.0f), //brown
         make_tuple(0.38f, 0.102f, 0.0f, 0.0f), //brown
         make_tuple(0.38f, 0.102f, 0.0f, 0.0f), //brown
         make_tuple(0.38f, 0.102f, 0.0f, 0.0f), //brown
         make_tuple(0.38f, 0.102f, 0.0f, 0.0f), //brown
         make_tuple(0.38f, 0.102f, 0.0f, 0.0f) //brown
-    
-     );
+
+    );
 
 
     //render bed balish
@@ -172,15 +193,15 @@ void display() {
 
 
     draw_cube(
-        
-        make_tuple(0.675f, 0.498f, 1.0f,0.0f), //violet
+
+        make_tuple(0.675f, 0.498f, 1.0f, 0.0f), //violet
         make_tuple(0.675f, 0.498f, 1.0f, 0.0f), //violet
         make_tuple(0.675f, 0.498f, 1.0f, 0.0f), //violet
         make_tuple(0.675f, 0.498f, 1.0f, 0.0f), //violet
         make_tuple(0.675f, 0.498f, 1.0f, 0.0f), //violet
         make_tuple(0.675f, 0.498f, 1.0f, 0.0f) //violet
 
-        
+
     );
 
 
@@ -198,30 +219,44 @@ void display() {
         make_tuple(1.0f, 0.5f, 0.0f, 0.0f), //orange
         make_tuple(1.0f, 0.5f, 0.0f, 0.0f)  //orange
     );
-   
+
     //floor er design
     glLoadIdentity();
     glTranslatef(0.0f, -2.0f, -20.0f);
     glScalef(20.0f, 5.0f, 1.0f);
     glTranslatef(0.0f, -1.0f, 0.0f);
 
+    /*draw_cube(
+        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
+        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
+        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
+        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
+        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
+        make_tuple(2.0f, 0.5f, 1.0f, 0.0f)  //lilac
+    );*/
     draw_cube(
-        make_tuple(2.0f, 0.5f, 1.0f,0.0f), //lilac
-        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
-        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
-        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
-        make_tuple(2.0f, 0.5f, 1.0f, 0.0f), //lilac
-        make_tuple(2.0f, 0.5f, 1.0f,0.0f)  //lilac
+        make_tuple(colors[floorIndex][0], colors[floorIndex][1], colors[floorIndex][2], colors[floorIndex][3]),
+
+        make_tuple(colors[floorIndex][0], colors[floorIndex][1], colors[floorIndex][2], colors[floorIndex][3]),
+
+        make_tuple(colors[floorIndex][0], colors[floorIndex][1], colors[floorIndex][2], colors[floorIndex][3]),
+
+        make_tuple(colors[floorIndex][0], colors[floorIndex][1], colors[floorIndex][2], colors[floorIndex][3]),
+
+        make_tuple(colors[floorIndex][0], colors[floorIndex][1], colors[floorIndex][2], colors[floorIndex][3]),
+
+
+        make_tuple(colors[floorIndex][0], colors[floorIndex][1], colors[floorIndex][2], colors[floorIndex][3])
     );
 
-   
+
     //wadrobe
     glLoadIdentity();
-    glTranslatef(2.0f, 0.0f,-9.0f);
-    glScalef(1.0f,2.3f, 1.0f);
+    glTranslatef(2.0f, 0.0f, -9.0f);
+    glScalef(1.0f, 2.3f, 1.0f);
     glTranslatef(2.0f, 0.0f, -9.0f);
     draw_cube(
-        make_tuple(1.0f, 0.302f, 0.0f,0.0f),///khoyeri color
+        make_tuple(1.0f, 0.302f, 0.0f, 0.0f),///khoyeri color
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f),
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f),
         make_tuple(1.0f, 0.302f, 0.0f, 0.0f),
@@ -233,7 +268,7 @@ void display() {
     glScalef(0.01f, 2.3f, 1.0f);
     glTranslatef(1.0f, 0.0f, -9.0f);
     draw_cube(
-        make_tuple(0.129, 0.125, 0.125,0.0),
+        make_tuple(0.129, 0.125, 0.125, 0.0),
         make_tuple(0.129, 0.125, 0.125, 0.0),
         make_tuple(0.129, 0.125, 0.125, 0.0),
         make_tuple(0.129, 0.125, 0.125, 0.0),
@@ -252,7 +287,7 @@ void display() {
         make_tuple(0.129, 0.125, 0.125, 0.0),
         make_tuple(0.129, 0.125, 0.125, 0.0)
     );
-    
+
 
     //Janala
     glLoadIdentity();
@@ -260,19 +295,19 @@ void display() {
     glScalef(-0.6f, 0.6f, 0.01f);
     glTranslatef(2.0f, 2.5f, -5.0f);
     draw_cube(
-        make_tuple(0.122f, 0.141f, 0.141f, 0.0f), //sky
-        make_tuple(0.122f, 0.141f, 0.141f, 0.0f),//sky
-        make_tuple(0.816f, 1.0f, 1.0, 0.0f),//sky
-        make_tuple(0.122f, 0.141f, 0.141f, 0.0f),//sky
-        make_tuple(0.122f, 0.141f, 0.141f, 0.0f),//sky
-        make_tuple(0.122f, 0.141f, 0.141f, 0.0f)//sky
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3]),//day
+        make_tuple(daynight[day][0], daynight[day][1], daynight[day][2], daynight[day][3])//day
     );
     glLoadIdentity();
     glTranslatef(-3.0f, 0.0f, -9.0f);
     glScalef(-0.03f, 0.6f, 0.01f);
     glTranslatef(43.5f, 2.5f, -5.0f);
     draw_cube(
-        make_tuple(0.122f, 0.141f, 0.141f,0.0f), //black
+        make_tuple(0.122f, 0.141f, 0.141f, 0.0f), //black
         make_tuple(0.122f, 0.141f, 0.141f, 0.0f), //black
         make_tuple(0.122f, 0.141f, 0.141f, 0.0f), //black
         make_tuple(0.122f, 0.141f, 0.141f, 0.0f), //black
@@ -284,7 +319,7 @@ void display() {
     glTranslatef(-3.0f, 0.0f, -9.0f);
     glScalef(-0.03f, 0.6f, 0.01f);
     glTranslatef(31.5f, 2.5f, -5.0f);
-    
+
     draw_cube(
         make_tuple(0.122f, 0.141f, 0.141f, 0.0f), //black
         make_tuple(0.122f, 0.141f, 0.141f, 0.0f), //black
@@ -301,7 +336,7 @@ void display() {
     glTranslatef(-2.0f, -1.5f, -7.0f);
     glScalef(0.5f, 0.01f, -0.5f);
     glTranslatef(5.3f, 2.0f, -5.5f);
-    
+
 
     draw_cube(
         make_tuple(0.961f, 0.039f, 0.039f, 0.878f), //red
@@ -368,7 +403,7 @@ void display() {
         make_tuple(0.141, 0.141, 0.137, 0.98), //black
         make_tuple(0.141, 0.141, 0.137, 0.98)  //black
     );
-    
+
     //render fan
     glLoadIdentity();
     glTranslatef(2.5f, -1.5f, -7.0f);
@@ -394,7 +429,7 @@ void display() {
     glTranslatef(-1.0f, -1.0f, 1.0f);
     glTranslatef(-2.0f, 1.0f, 1.0f);
     glRotatef(angleFanBlade, 1, 0, 0);
-    
+
     draw_cube(
         make_tuple(0.961, 0.961, 0.961, 0.98), //white
         make_tuple(0.808, 0.831, 0.831, 0.98), //white
@@ -406,9 +441,9 @@ void display() {
 
 
 
-    
+
     glutSwapBuffers();  // Swap the front and back frame buffers (double buffering)
-    
+
 
     ///fan choltase
     if (fanSwitch) {
@@ -419,33 +454,48 @@ void display() {
     }
 
 
-    
+
 }
 void myKeyboardFunc(unsigned char key, int x, int y)
 {
 
     switch (key) {
-        case 'f':
-            if (fanSwitch) {
-                fanSwitch = false;
-                std::cout << "Fan off hoise\n";
-            }
-            else if (!fanSwitch) {
-                fanSwitch = true;
-                std::cout << "Fan on hoise.\n";
-            }
-            break;
-        case 'c':
-            cout << colorIndex << '\n';
-            colorIndex++;
-            colorIndex = colorIndex % 7;
-            break;
-        default:
-            break;
+    case 'f':
+        if (fanSwitch) {
+            fanSwitch = false;
+            std::cout << "Fan off hoise\n";
+        }
+        else if (!fanSwitch) {
+            fanSwitch = true;
+            std::cout << "Fan on hoise.\n";
+        }
+        break;
+    case 'c':
+        cout << colorIndex << '\n';
+        colorIndex++;
+        colorIndex = colorIndex % 7;
+        break;
+
+    case 'd':
+
+        if (day == 0) {
+            day += 1;
+        }
+        else if (day == 1) {
+            day -= 1;
+        }
+        cout << "day " << day;
+        break;
+    case 'g':
+        floorIndex += 1;
+        floorIndex = floorIndex % 8;
+        break;
+    default:
+        break;
 
     }
     glutPostRedisplay();
-    
+
 
 }
 
@@ -485,11 +535,11 @@ int main(int argc, char** argv) {
     glutInitWindowSize(640, 480);   // Set the window's initial width & height
     glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
     glutCreateWindow(title);          // Create window with the given title
-    
-    cout << "Press c to change color\n Press f to turn the fan on/off\n";
+
+    cout << "Press c to change color\nPress f to turn the fan on/off\nPress g to change floor color\nPress d to switch day and night\n";
     glutDisplayFunc(display);       // Register callback handler for window re-paint event
     glutKeyboardFunc(myKeyboardFunc); //keyboard
-    
+
     glutReshapeFunc(reshape);       // Register callback handler for window re-size event
     initGL();                       // Our own OpenGL initialization
     glutTimerFunc(0, timer, 0);     // First timer call immediately
