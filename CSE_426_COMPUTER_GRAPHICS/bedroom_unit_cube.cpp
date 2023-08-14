@@ -38,103 +38,6 @@ void initGL() {
     glShadeModel(GL_SMOOTH);   // Enable smooth shading
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
 }
-float rot = 0;
-
-static GLfloat v_cube[8][3] =
-{
-    {-1.0, -1.0, -1.0}, ///point index 0
-    {-1.0, -1.0, 1.0}, ///point index 1
-    {1.0, -1.0, 1.0}, ///point index 2
-    {1.0, -1.0, -1.0}, ///point index 3
-    {-1.0, 1.0, 1.0}, ///point index 4
-    {-1.0, 1.0, -1.0}, ///5
-    {1.0, 1.0, -1.0},///6
-    {1.0, 1.0, 1.0}  ///7
-};
-
-static GLubyte c_Indices[6][4] =
-{
-    {1,2,7,4},
-    {2,3,6,7},
-    {4,6,3,0},
-    {4,5,0,1},
-    {4,7,6,5},
-    {0,3,2,1}
-};
-static void getNormal3p
-(GLfloat x1, GLfloat y1, GLfloat z1, GLfloat x2, GLfloat y2, GLfloat z2, GLfloat x3, GLfloat y3, GLfloat z3)
-{
-    GLfloat Ux, Uy, Uz, Vx, Vy, Vz, Nx, Ny, Nz;
-
-    Ux = x2 - x1;
-    Uy = y2 - y1;
-    Uz = z2 - z1;
-
-    Vx = x3 - x1;
-    Vy = y3 - y1;
-    Vz = z3 - z1;
-
-    Nx = Uy * Vz - Uz * Vy;
-    Ny = Uz * Vx - Ux * Vz;
-    Nz = Ux * Vy - Uy * Vx;
-
-    glNormal3f(Nx, Ny, Nz);
-}
-void light()
-{
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-
-    GLfloat light_position[] = { 1.0, 0.5, 1.0, 1.0 };
-    GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
-    GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
-    GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-
-    glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
-
-}
-
-
-void draw_cube(
-    tuple<float, float, float, float> top_color,
-    tuple<float, float, float, float> bottom_face_color,
-    tuple<float, float, float, float> front_face_color,
-    tuple<float, float, float, float> back_face_color,
-    tuple<float, float, float, float> left_face_color,
-    tuple<float, float, float, float> right_face_color
-)
-{
-    GLfloat v_cube_color[8][4] = {
-        { get<0>(top_color), get<1>(top_color), get<2>(top_color), get<3>(top_color) },
-        { get<0>(bottom_face_color), get<1>(bottom_face_color), get<2>(bottom_face_color), get<3>(bottom_face_color) },
-        { get<0>(front_face_color), get<1>(front_face_color), get<2>(front_face_color), get<3>(front_face_color) },
-        { get<0>(back_face_color), get<1>(back_face_color), get<2>(back_face_color), get<3>(back_face_color) },
-        { get<0>(left_face_color), get<1>(left_face_color), get<2>(left_face_color), get<3>(left_face_color) },
-        { get<0>(right_face_color), get<1>(right_face_color), get<2>(right_face_color), get<3>(right_face_color) }
-    };
-    light();
-
-
-    glBegin(GL_QUADS);
-    for (GLint i = 0; i < 6; i++)
-    {
-        glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, v_cube_color[i]);
-        for (GLint j = 0; j < 4; j++)
-        {
-            glVertex3fv(v_cube[c_Indices[i][j]]);
-        }
-    }
-    glEnd();
-
-    glDisable(GL_LIGHTING);
-    glDisable(GL_LIGHT0);
-}
-
-
-
 /*
 void draw_cube(tuple<float, float, float, float> top_color,
     tuple<float, float, float, float> bottom_face_color,
@@ -192,6 +95,66 @@ void draw_cube(tuple<float, float, float, float> top_color,
     glVertex3f(1.0f, -1.0f, -1.0f);
     glEnd();  // End of drawing color-cube
 }*/
+void draw_cube(
+    tuple<float, float, float, float> top_color,
+    tuple<float, float, float, float> bottom_face_color,
+    tuple<float, float, float, float> front_face_color,
+    tuple<float, float, float, float> back_face_color,
+    tuple<float, float, float, float> left_face_color,
+    tuple<float, float, float, float> right_face_color
+) {
+
+    //function to draw  a unit cube given color of its six side
+    // Render a unit cube consisting of 6 quads
+
+
+    glBegin(GL_QUADS);                // Begin drawing the color cube
+    // Top face (y = 1.0f)
+    // Define vertices in counter-clockwise (CCW) order with normal pointing out
+    glColor3f(get<0>(top_color), get<1>(top_color), get<1>(top_color));
+    glVertex3f(1.0f, 1.0f, -1.0f);
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    glVertex3f(-1.0f, 1.0f, 1.0f);
+    glVertex3f(1.0f, 1.0f, 1.0f);
+
+    // Bottom face (y = -1.0f)
+    glColor3f(get<0>(bottom_face_color), get<1>(bottom_face_color), get<2>(bottom_face_color));
+    glVertex3f(1.0f, -1.0f, 1.0f);
+    glVertex3f(-1.0f, -1.0f, 1.0f);
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(1.0f, -1.0f, -1.0f);
+
+    // Front face  (z = 1.0f)
+    glColor3f(get<0>(front_face_color), get<1>(front_face_color), get<2>(front_face_color));
+    glVertex3f(1.0f, 1.0f, 1.0f);
+    glVertex3f(-1.0f, 1.0f, 1.0f);
+    glVertex3f(-1.0f, -1.0f, 1.0f);
+    glVertex3f(1.0f, -1.0f, 1.0f);
+
+    // Back face (z = -1.0f)
+    glColor3f(get<0>(back_face_color), get<1>(back_face_color), get<2>(back_face_color));
+    glVertex3f(1.0f, -1.0f, -1.0f);
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    glVertex3f(1.0f, 1.0f, -1.0f);
+
+    // Left face (x = -1.0f)
+    glColor3f(get<0>(left_face_color), get<1>(left_face_color), get<2>(left_face_color));
+    glVertex3f(-1.0f, 1.0f, 1.0f);
+    glVertex3f(-1.0f, 1.0f, -1.0f);
+    glVertex3f(-1.0f, -1.0f, -1.0f);
+    glVertex3f(-1.0f, -1.0f, 1.0f);
+
+    // Right face (x = 1.0f)
+    glColor3f(get<0>(right_face_color), get<1>(right_face_color), get<2>(right_face_color));
+    glVertex3f(1.0f, 1.0f, -1.0f);
+    glVertex3f(1.0f, 1.0f, 1.0f);
+    glVertex3f(1.0f, -1.0f, 1.0f);
+    glVertex3f(1.0f, -1.0f, -1.0f);
+    glEnd();  // End of drawing color-cube
+}
+
+
 
 /* Handler for window-repaint event. Called back when the window first appears and
    whenever the window needs to be re-painted. */
@@ -554,9 +517,6 @@ void display() {
 
 
 }
-
-
-
 void myKeyboardFunc(unsigned char key, int x, int y)
 {
 
@@ -636,11 +596,7 @@ int main(int argc, char** argv) {
     glutInitWindowSize(640, 480);   // Set the window's initial width & height
     glutInitWindowPosition(50, 50); // Position the window's initial top-left corner
     glutCreateWindow(title);          // Create window with the given title
-    glShadeModel(GL_SMOOTH);
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_NORMALIZE);
-    glEnable(GL_LIGHTING);
-    //light();
+
     cout << "Press c to change color\nPress f to turn the fan on/off\nPress g to change floor color\nPress d to switch day and night\n";
     glutDisplayFunc(display);       // Register callback handler for window re-paint event
     glutKeyboardFunc(myKeyboardFunc); //keyboard
