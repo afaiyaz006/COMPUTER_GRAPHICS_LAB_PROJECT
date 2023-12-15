@@ -18,8 +18,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="bedroom3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="bedroom.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bedroom.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

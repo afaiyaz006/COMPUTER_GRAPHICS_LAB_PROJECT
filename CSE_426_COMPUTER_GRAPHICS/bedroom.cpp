@@ -2,6 +2,9 @@
 #include <GL/glut.h>  // GLUT, include glu.h and gl.h
 #include<tuple>   // for representing color code
 #include<iostream>
+#include "bedroom.h"
+#ifdef __bedroom__
+
 using namespace std;
 /* Global variables */
 char title[] = "Bedroom";
@@ -9,6 +12,11 @@ int refreshMills = 15;        // refresh interval in milliseconds
 int angleFanBlade = 0.0f;
 bool fanSwitch = true;
 int colorIndex = 0;
+bool lightOn = true;
+bool ambientLight = true;
+bool diffuseLight = true;
+bool specularLight = true;
+
 float colors[10][4] = {
                 {0.376f, 1.0f, 0.647f, 0.0f},//default color
                 {1.0f, 1.0f, 0.0f, 0.0f},//yellow
@@ -21,7 +29,7 @@ float colors[10][4] = {
 };
 
 float daynight[2][4] = {
-    {0.667f, 1.0f, 0.957f, 0.0f},
+    {0, 1, 0.969,1},
     {0.0f,0.0f,0.0f,0.0f}
 };
 
@@ -85,15 +93,31 @@ void light()
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
 
-    GLfloat light_position[] = { 1.0, 0.5, 1.0, 1.0 };
+    GLfloat light_position[] = { -7.0,-1.0, 1.0, 1.0 };
     GLfloat light_ambient[] = { 0.2, 0.2, 0.2, 1.0 };
     GLfloat light_diffuse[] = { 1.0, 1.0, 1.0, 1.0 };
     GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-
+    GLfloat no_light[] = { 0.0,0.0,0.0,0.0 };
+    
     glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
-    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    if (ambientLight && lightOn) {
+        glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
+    }
+    else { 
+        glLightfv(GL_LIGHT0, GL_AMBIENT, no_light); 
+    }
+    if (diffuseLight && lightOn) {
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
+    }
+    else { 
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, no_light);
+    }
+    if (specularLight && lightOn) { 
+        glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
+    }
+    else { 
+        glLightfv(GL_LIGHT0, GL_SPECULAR, no_light); 
+    }
 
 }
 
@@ -115,20 +139,24 @@ void draw_cube(
         { get<0>(left_face_color), get<1>(left_face_color), get<2>(left_face_color), get<3>(left_face_color) },
         { get<0>(right_face_color), get<1>(right_face_color), get<2>(right_face_color), get<3>(right_face_color) }
     };
-    light();
+   
+     light();
 
 
     glBegin(GL_QUADS);
     for (GLint i = 0; i < 6; i++)
     {
         glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, v_cube_color[i]);
+        GLfloat white[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+        glMaterialf(GL_FRONT, GL_SHININESS, 80.0f);
         for (GLint j = 0; j < 4; j++)
         {
             glVertex3fv(v_cube[c_Indices[i][j]]);
         }
     }
     glEnd();
-
+   
     glDisable(GL_LIGHTING);
     glDisable(GL_LIGHT0);
 }
@@ -572,24 +600,38 @@ void myKeyboardFunc(unsigned char key, int x, int y)
         }
         break;
     case 'c':
-        cout << colorIndex << '\n';
+        //cout << colorIndex << '\n';
         colorIndex++;
         colorIndex = colorIndex % 7;
         break;
 
     case 'd':
-
+        
         if (day == 0) {
             day += 1;
+            cout << "Switched to night.\n";
         }
         else if (day == 1) {
+            cout << "Switched to day.\n";
             day -= 1;
         }
-        cout << "day " << day;
         break;
     case 'g':
         floorIndex += 1;
         floorIndex = floorIndex % 8;
+        break;
+
+    case '1':
+        lightOn ^= 1;
+        break;
+    case '2':
+        ambientLight ^= 1;
+        break;
+    case '3':
+        diffuseLight ^= 1;
+        break;
+    case '4':
+        specularLight ^= 1;
         break;
     default:
         break;
@@ -641,7 +683,7 @@ int main(int argc, char** argv) {
     glEnable(GL_NORMALIZE);
     glEnable(GL_LIGHTING);
     //light();
-    cout << "Press c to change color\nPress f to turn the fan on/off\nPress g to change floor color\nPress d to switch day and night\n";
+    cout << "Press c to change color\nPress f to turn the fan on/off\nPress g to change floor color\nPress d to switch day and night\n1 to toggle light\n2 to toggle ambient light\n3 to toggle diffuse light\n4 to toggle specular light\n";
     glutDisplayFunc(display);       // Register callback handler for window re-paint event
     glutKeyboardFunc(myKeyboardFunc); //keyboard
 
@@ -651,3 +693,4 @@ int main(int argc, char** argv) {
     glutMainLoop();                 // Enter the infinite event-processing loop
     return 0;
 }
+#endif

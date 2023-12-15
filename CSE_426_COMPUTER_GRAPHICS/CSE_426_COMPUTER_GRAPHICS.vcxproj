@@ -131,6 +131,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="bedroom.cpp" />
+    <ClCompile Include="bedroom3d.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="bedroom.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
